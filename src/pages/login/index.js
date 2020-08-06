@@ -1,15 +1,27 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
 const Login = (props) => {
-    const [loginInfo, setLoginInfo] = useState({
+    let usernameField;
+    let passwordField;
+    let rememberMeField;
+    let [loginInfo, setLoginInfo] = useState({
         username: null,
         password: null,
         rememberMe: false,
     });
 
+    const loginInfoChangeHandler = (e) => {
+        setLoginInfo({
+            ...loginInfo,
+            [e.target.name]: e.target.type === 'checkbox'? e.target.checked : e.target.value
+        });
+    }
 
+    useEffect(()=> {
+        console.log("loginInfo", loginInfo);
+    },[loginInfo])
 
     return (
         <>
@@ -17,37 +29,29 @@ const Login = (props) => {
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>Usuario</Form.Label>
                     <Form.Control
+                        name="username"
                         type="text"
                         placeholder="Ingrese el Usuario"
                         required
-                        onChange={(e) => {
-                            setLoginInfo({...loginInfo, username: e.target.value});
-                            console.log("setLoginInfo", loginInfo);
-                        }}
+                        onChange={loginInfoChangeHandler}
                     />
                 </Form.Group>
                 <Form.Group controlId="formBasicPassword">
                     <Form.Label>Contraseña</Form.Label>
                     <Form.Control
+                        name="password"
                         type="password"
                         placeholder="Ingrese la Contraseña"
                         required
-                        onChange={(e) => {
-                            dispatchEvent(e.event);
-                            setLoginInfo({...loginInfo, password: e.target.value});
-                            console.log("setLoginInfo", loginInfo);
-                        }}
+                        onChange={loginInfoChangeHandler}
                     />
                 </Form.Group>
                 <Form.Group controlId="formBasicCheckbox">
                     <Form.Check
+                        name="rememberMe"
                         type="checkbox"
                         label="Recuerdame"
-                        onChange={(e) => {
-                            setLoginInfo({...loginInfo, rememberMe: !e.target.checked});
-                            console.log("setLoginInfo", loginInfo);
-                        }}
-
+                        onChange={loginInfoChangeHandler}
                     />
                 </Form.Group>
                 <Button variant="primary" type="submit">
