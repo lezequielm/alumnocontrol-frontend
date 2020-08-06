@@ -1,5 +1,5 @@
 import React,{lazy} from "react";
-import MainLayout from '../layouts/main';
+import LoginLayout from '../layouts/login';
 import {Redirect} from "react-router-dom";
 
 
@@ -7,18 +7,17 @@ import {Redirect} from "react-router-dom";
 export default [
     {
         path: '/',
-        component: MainLayout,
+        component: LoginLayout,
         routes: [
             {
-                path: '/home',
+                path: '/login',
                 exact: true,
-                component: lazy(() => import('../pages/home/index'))
+                component: lazy(() => import('../pages/login'))
             },
             {
-                component: () => <Redirect to="/home" />
+                component: () => <Redirect to="/login" />
             }
 
         ]
     }
 ]
-
