@@ -38,7 +38,11 @@ const Login = (props) => {
 
 
         fetch("http://lezequielm.ddns.net:8080/api/authenticate", requestOptions)
-            .then(response => response.text())
+            .then(response => {
+                if (response.status !== 200)
+                    setLoginResult(false);
+                response.text();
+            } )
             .then(result => console.log(result))
             .catch( () => setLoginResult(false));
     }
