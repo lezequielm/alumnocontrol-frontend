@@ -1,31 +1,59 @@
 import React, {useState, useEffect} from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Alert from "react-bootstrap/Alert";
+import FormAlert from '../../components/formAlert';
 
 const Login = (props) => {
-    let usernameField;
-    let passwordField;
-    let rememberMeField;
-    let [loginInfo, setLoginInfo] = useState({
+    const [loginInfo, setLoginInfo] = useState({
         username: null,
         password: null,
         rememberMe: false,
     });
+    const [loginResult, setLoginResult] = useState(undefined);
 
     const loginInfoChangeHandler = (e) => {
         setLoginInfo({
             ...loginInfo,
-            [e.target.name]: e.target.type === 'checkbox'? e.target.checked : e.target.value
+            [e.target.name]: e.target.type === 'checkbox' ? e.target.checked : e.target.value
         });
     }
 
-    useEffect(()=> {
+    useEffect(() => {
         console.log("loginInfo", loginInfo);
-    },[loginInfo])
+    }, [loginInfo])
+
+    const loginHandler = (e) => {
+        e.preventDefault();
+        let myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        let raw = JSON.stringify(loginInfo);
+
+        let requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+        };
+
+
+        fetch("http://lezequielm.ddns.net:8080/api/authenticate", requestOptions)
+            .then(response => response.text())
+            .then(result => console.log(result))
+            .catch( () => setLoginResult(false));
+    }
+
+
+
 
     return (
         <>
             <Form>
+                <FormAlert
+                    title={'Usuario o contraseña invalidos.'}
+                    message={'Verifique los datos e intente nuevamente.'}
+                    visible={loginResult !== undefined && !loginResult}
+                />
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>Usuario</Form.Label>
                     <Form.Control
@@ -54,7 +82,11 @@ const Login = (props) => {
                         onChange={loginInfoChangeHandler}
                     />
                 </Form.Group>
-                <Button variant="primary" type="submit">
+                <Button
+                    variant="primary"
+                    type="submit"
+                    onClick={loginHandler}
+                >
                     Ingresar
                 </Button>
             </Form>
