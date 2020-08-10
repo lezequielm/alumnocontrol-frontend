@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import Alert from "react-bootstrap/Alert";
 import FormAlert from '../../components/formAlert';
+import {login} from "../../services/auth/authService";
 
 const Login = (props) => {
     const [loginInfo, setLoginInfo] = useState({
@@ -25,30 +25,16 @@ const Login = (props) => {
 
     const loginHandler = (e) => {
         e.preventDefault();
-        let myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-
-        let raw = JSON.stringify(loginInfo);
-
-        let requestOptions = {
-            method: 'POST',
-            headers: myHeaders,
-            body: raw,
-        };
-
-
-        fetch("http://lezequielm.ddns.net:8080/api/authenticate", requestOptions)
-            .then(response => {
-                if (response.status !== 200)
-                    setLoginResult(false);
-                response.text();
-            } )
-            .then(result => console.log(result))
-            .catch( () => setLoginResult(false));
+        login(loginInfo)
+            .then((data) => {
+                sessionStorage.setItem('sesionToken',data.id_token);
+                setLoginResult(true);
+            })
+            .catch(() => {
+                sessionStorage.removeItem('sesionToken');
+                setLoginResult(false);
+            });
     }
-
-
-
 
     return (
         <>
