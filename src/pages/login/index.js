@@ -21,17 +21,23 @@ const Login = (props) => {
 
     useEffect(() => {
         console.log("loginInfo", loginInfo);
-    }, [loginInfo])
+    }, [loginInfo]);
+
+    useEffect(() => {
+        console.log("loginResult", loginResult);
+        if (loginResult)
+            window.location.reload();
+    }, [loginResult]);
 
     const loginHandler = (e) => {
         e.preventDefault();
         login(loginInfo)
             .then((data) => {
-                sessionStorage.setItem('sesionToken',data.id_token);
+                sessionStorage.setItem('sessionToken',data.id_token);
                 setLoginResult(true);
             })
             .catch(() => {
-                sessionStorage.removeItem('sesionToken');
+                sessionStorage.removeItem('sessionToken');
                 setLoginResult(false);
             });
     }

@@ -1,16 +1,18 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {renderRoutes} from "react-router-config";
-import rutasAlumnos from "./rutasAlumnos";
+import loggedRoutes from "./loggedRoutes";
 import logonRoutes from "./logonRoutes";
 
-const appRouter = () => {
+const AppRouter = () => {
+    let sessionToken = sessionStorage.getItem('sessionToken');
+
     return (
         <>
             {
-                renderRoutes(logonRoutes)
+                sessionToken ? renderRoutes(loggedRoutes) : renderRoutes(logonRoutes)
             }
         </>
     )
 }
 
-export default appRouter;
+export default AppRouter;
