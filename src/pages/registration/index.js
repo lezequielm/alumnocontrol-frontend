@@ -1,55 +1,81 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import Form from "react-bootstrap/Form";
-import FormAlert from "../../components/formAlert";
 import Button from "react-bootstrap/Button";
-import {login} from "../../services/auth/authService";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import React, {useState, useEffect} from "react";
 
-const registration = (props) => {
+
+const Registration = (props) => {
 
     const [registrationInfo, setRegistrationInfo] = useState({
+        login: null,
         firstName: null,
-        SecondName: null,
-        emailAddress: null,
-        confEmailAddress: null,
+        lastName: null,
+        email: null,
+        confEmail: null,
         password: null,
         confPassword: null,
     });
     const [registrationResult, setRegistrationResult] = useState(undefined);
 
+    const [validPassword, setValidPassword] = useState(undefined);
 
 
     const registrationInfoChangeHandler = (e) => {
         setRegistrationInfo({
             ...registrationInfo,
-            //[e.target.name]: e.target.type === 'checkbox' ? e.target.checked : e.target.value
+            [e.target.name]: e.target.value
         });
     }
+
+    useEffect(() => {
+        console.log("registrationInfo", registrationInfo);
+        if (registrationInfo.confPassword !== null) {
+            if (registrationInfo.confPassword === registrationInfo.password)
+                console.log("Las contraseñas coinciden");
+            else
+                console.warn("las contraseñas no coinciden");
+        }
+
+    }, [registrationInfo]);
+
 
     const loginHandler = (e) => {
         e.preventDefault();
     }
 
-return (
-    <>
-
+    return (
+        <>
+            <Form.Group controlId="formBasicUsserName">
+                <Form.Label>Nombre de usuario</Form.Label>
+                <Form.Control
+                    name="login"
+                    type="text"
+                    placeholder="Ingrese nombre de usuario"
+                    required
+                    onChange={registrationInfoChangeHandler}
+                />
+                <Form.Text className="text-muted">
+                    El nombre de usuario no puede contener espacios.
+                </Form.Text>
+            </Form.Group>
             <Form>
                 <Row>
                     <Col>
+                        <Form.Label>Nombre</Form.Label>
                         <Form.Control
                             name="firstName"
-                            placeholder="Nombre"
+                            placeholder="Ingrese Nombre"
                             type="text"
                             required
                             onChange={registrationInfoChangeHandler}
                         />
                     </Col>
                     <Col>
+                        <Form.Label>Apellido</Form.Label>
                         <Form.Control
                             name="lastName"
-                            placeholder="Apellido"
+                            placeholder="Ingrese Apellido"
                             type="text"
                             required
                             onChange={registrationInfoChangeHandler}
@@ -58,22 +84,22 @@ return (
                 </Row>
             </Form>
             <Form.Group controlId="formBasicEmail">
-                <Form.Label>Usuario</Form.Label>
+                <Form.Label>Correo Electrónico</Form.Label>
                 <Form.Control
-                    name="emailAddress"
-                    type="text"
-                    placeholder="Correo Electrónico"
+                    name="email"
+                    type="email"
+                    placeholder="Ingrese su Correo Electrónico"
                     required
                     onChange={registrationInfoChangeHandler}
                 />
             </Form.Group>
 
             <Form.Group controlId="formBasicEmail">
-                <Form.Label>Usuario</Form.Label>
+                <Form.Label>Confirmación de Email</Form.Label>
                 <Form.Control
-                    name="confEmailAddress"
+                    name="confEmail"
                     type="text"
-                    placeholder="Confirme Correo Electrónico"
+                    placeholder="Ingrese nuevamente su Correo Electrónico"
                     required
                     onChange={registrationInfoChangeHandler}
                 />
@@ -84,18 +110,21 @@ return (
                 <Form.Control
                     name="password"
                     type="password"
-                    placeholder="Ingrese la Contraseña"
+                    placeholder="Ingrese su Contraseña"
                     required
                     onChange={registrationInfoChangeHandler}
                 />
+                <Form.Text className="text-muted">
+                    La contraseña debe contener 8 caracteres, puede combinar letras y números.
+                </Form.Text>
             </Form.Group>
 
             <Form.Group controlId="formBasicPassword">
-                <Form.Label>Contraseña</Form.Label>
+                <Form.Label>Confirmación de Contraseña</Form.Label>
                 <Form.Control
                     name="confPassword"
                     type="password"
-                    placeholder="Confirme Contraseña"
+                    placeholder="Ingrese nuevamente su Contraseña"
                     required
                     onChange={registrationInfoChangeHandler}
                 />
@@ -109,8 +138,8 @@ return (
                 Registrarme
             </Button>
 
-    </>
-)
+        </>
+    )
 }
 
-export default registration();
+export default Registration;

@@ -15,6 +15,11 @@ export default [
                 component: lazy(() => import('../pages/login'))
             },
             {
+                path: '/registration',
+                exact: true,
+                component: lazy(() => import('../pages/registration'))
+            },
+            {
                 component: () => <Redirect to="/login" />
             }
 
