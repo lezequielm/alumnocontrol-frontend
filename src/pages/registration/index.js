@@ -19,6 +19,10 @@ const Registration = (props) => {
     const [registrationResult, setRegistrationResult] = useState(undefined);
 
     const [validPassword, setValidPassword] = useState(undefined);
+    const [validEmail, setValidEmail] = useState(undefined);
+    const [validLogin, setValidLogin] = useState(undefined)
+    const [validFirstName, setValidFirstName] = useState(undefined)
+    const [validLastName, setValidLastName] = useState(undefined)
 
 
     const registrationInfoChangeHandler = (e) => {
@@ -30,12 +34,20 @@ const Registration = (props) => {
 
     useEffect(() => {
         console.log("registrationInfo", registrationInfo);
-        if (registrationInfo.confPassword !== null) {
-            if (registrationInfo.confPassword === registrationInfo.password)
-                console.log("Las contraseñas coinciden");
-            else
-                console.warn("las contraseñas no coinciden");
-        }
+        if (registrationInfo.confPassword !== null && registrationInfo.password !== null)
+            setValidPassword(registrationInfo.confPassword === registrationInfo.password && registrationInfo.password.length===8);
+
+        if (registrationInfo.confEmail !== null && registrationInfo.email !== null)
+            setValidEmail(registrationInfo.confEmail === registrationInfo.email);
+
+        if (registrationInfo.login !== null)
+            setValidLogin(registrationInfo.login.length>=3 && registrationInfo.login.length<=50 && !registrationInfo.login.includes(' '));
+
+        if (registrationInfo.firstName !== null)
+            setValidFirstName(registrationInfo.firstName.length<=50);
+
+        if (registrationInfo.lastName !== null)
+            setValidLastName(registrationInfo.lastName.length<=50);
 
     }, [registrationInfo]);
 
@@ -49,6 +61,8 @@ const Registration = (props) => {
             <Form.Group controlId="formBasicUsserName">
                 <Form.Label>Nombre de usuario</Form.Label>
                 <Form.Control
+                    isValid={validLogin}
+                    isInvalid={validLogin !== undefined && !validLogin}
                     name="login"
                     type="text"
                     placeholder="Ingrese nombre de usuario"
@@ -64,6 +78,8 @@ const Registration = (props) => {
                     <Col>
                         <Form.Label>Nombre</Form.Label>
                         <Form.Control
+                            isValid={validFirstName}
+                            isInvalid={validFirstName !== undefined && !validFirstName}
                             name="firstName"
                             placeholder="Ingrese Nombre"
                             type="text"
@@ -74,6 +90,8 @@ const Registration = (props) => {
                     <Col>
                         <Form.Label>Apellido</Form.Label>
                         <Form.Control
+                            isValid={validLastName}
+                            isInvalid={validLastName !== undefined && !validLastName}
                             name="lastName"
                             placeholder="Ingrese Apellido"
                             type="text"
@@ -86,6 +104,8 @@ const Registration = (props) => {
             <Form.Group controlId="formBasicEmail">
                 <Form.Label>Correo Electrónico</Form.Label>
                 <Form.Control
+                    isValid={validEmail}
+                    isInvalid={validEmail !== undefined && !validEmail}
                     name="email"
                     type="email"
                     placeholder="Ingrese su Correo Electrónico"
@@ -97,6 +117,8 @@ const Registration = (props) => {
             <Form.Group controlId="formBasicEmail">
                 <Form.Label>Confirmación de Email</Form.Label>
                 <Form.Control
+                    isValid={validEmail}
+                    isInvalid={validEmail !== undefined && !validEmail}
                     name="confEmail"
                     type="text"
                     placeholder="Ingrese nuevamente su Correo Electrónico"
@@ -108,6 +130,8 @@ const Registration = (props) => {
             <Form.Group controlId="formBasicPassword">
                 <Form.Label>Contraseña</Form.Label>
                 <Form.Control
+                    isValid={validPassword}
+                    isInvalid={validPassword !== undefined && !validPassword}
                     name="password"
                     type="password"
                     placeholder="Ingrese su Contraseña"
@@ -122,6 +146,8 @@ const Registration = (props) => {
             <Form.Group controlId="formBasicPassword">
                 <Form.Label>Confirmación de Contraseña</Form.Label>
                 <Form.Control
+                    isValid={validPassword}
+                    isInvalid={validPassword !== undefined && !validPassword}
                     name="confPassword"
                     type="password"
                     placeholder="Ingrese nuevamente su Contraseña"
