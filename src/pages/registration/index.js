@@ -11,6 +11,7 @@ const Registration = (props) => {
 
     const [registrationInfo, setRegistrationInfo] = useState({
         login: null,
+        langKey: 'en',
         firstName: null,
         lastName: null,
         email: null,
@@ -56,6 +57,7 @@ const Registration = (props) => {
 
     const registrationHandler = (e) => {
         e.preventDefault();
+        e.target.disabled = true;
         register(registrationInfo)
             .then((data) => {
                 setRegistrationResult(true);
