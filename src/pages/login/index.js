@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from "react";
+import {useHistory} from "react-router";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import ButtonGroup from "react-bootstrap/ButtonGroup";
 import FormAlert from '../../components/formAlert';
 import {login} from "../../services/auth/authService";
 
@@ -11,6 +13,8 @@ const Login = (props) => {
         rememberMe: false,
     });
     const [loginResult, setLoginResult] = useState(undefined);
+
+    const history = useHistory();
 
     const loginInfoChangeHandler = (e) => {
         setLoginInfo({
@@ -33,7 +37,7 @@ const Login = (props) => {
         e.preventDefault();
         login(loginInfo)
             .then((data) => {
-                sessionStorage.setItem('sessionToken',data.id_token);
+                sessionStorage.setItem('sessionToken', data.id_token);
                 setLoginResult(true);
             })
             .catch(() => {
@@ -69,6 +73,9 @@ const Login = (props) => {
                         required
                         onChange={loginInfoChangeHandler}
                     />
+                    <Button
+                        onClick={() => history.push('/passwordRecovery')}
+                        variant="link">Olvide mi contraseña</Button>
                 </Form.Group>
                 <Form.Group controlId="formBasicCheckbox">
                     <Form.Check
@@ -78,13 +85,22 @@ const Login = (props) => {
                         onChange={loginInfoChangeHandler}
                     />
                 </Form.Group>
-                <Button
-                    variant="primary"
-                    type="submit"
-                    onClick={loginHandler}
-                >
-                    Ingresar
-                </Button>
+                <ButtonGroup>
+                    <Button
+                        variant="primary"
+                        type="submit"
+                        onClick={loginHandler}
+                    >
+                        Ingresar
+                    </Button>
+                    <Button
+                        variant="info"
+                        type="button"
+                        onClick={() => history.push('/registration')}
+                    >
+                        Registrarme
+                    </Button>
+                </ButtonGroup>
             </Form>
         </>
     )

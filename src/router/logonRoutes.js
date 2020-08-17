@@ -20,6 +20,16 @@ export default [
                 component: lazy(() => import('../pages/registration'))
             },
             {
+                path: '/passwordRecovery',
+                exact: true,
+                component: lazy(() => import('../pages/passwordRecovery'))
+            },
+            {
+                path: '/passwordRecoveryForm',
+                exact: true,
+                component: lazy(() => import('../pages/passwordRecoveryForm'))
+            },
+            {
                 component: () => <Redirect to="/login" />
             }
 

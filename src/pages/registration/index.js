@@ -1,8 +1,10 @@
 import React, {useState, useEffect} from "react";
+import {useHistory} from "react-router";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
+import {register} from "../../services/auth/authService";
 
 
 const Registration = (props) => {
@@ -20,10 +22,10 @@ const Registration = (props) => {
 
     const [validPassword, setValidPassword] = useState(undefined);
     const [validEmail, setValidEmail] = useState(undefined);
-    const [validLogin, setValidLogin] = useState(undefined)
-    const [validFirstName, setValidFirstName] = useState(undefined)
-    const [validLastName, setValidLastName] = useState(undefined)
-
+    const [validLogin, setValidLogin] = useState(undefined);
+    const [validFirstName, setValidFirstName] = useState(undefined);
+    const [validLastName, setValidLastName] = useState(undefined);
+    const history = useHistory();
 
     const registrationInfoChangeHandler = (e) => {
         setRegistrationInfo({
@@ -52,9 +54,20 @@ const Registration = (props) => {
     }, [registrationInfo]);
 
 
-    const loginHandler = (e) => {
+    const registrationHandler = (e) => {
         e.preventDefault();
+        register(registrationInfo)
+            .then((data) => {
+                setRegistrationResult(true);
+            })
+            .catch(() => setRegistrationResult(false));
     }
+
+    useEffect(() => {
+        if (registrationResult)
+            history.push('/login');
+
+    },[registrationResult]);
 
     return (
         <>
@@ -159,7 +172,7 @@ const Registration = (props) => {
             <Button
                 variant="primary"
                 type="submit"
-                onClick={loginHandler}
+                onClick={registrationHandler}
             >
                 Registrarme
             </Button>
