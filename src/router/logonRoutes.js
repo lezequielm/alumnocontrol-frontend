@@ -20,6 +20,10 @@ export default [
                 component: lazy(() => import('../pages/registration'))
             },
             {
+                path: '/account/activate',
+                component: lazy(() => import('../pages/activation'))
+            },
+            {
                 path: '/passwordRecovery',
                 exact: true,
                 component: lazy(() => import('../pages/passwordRecovery'))

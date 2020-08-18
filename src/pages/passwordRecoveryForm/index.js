@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from "react";
+import {useHistory} from "react-router";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import {register} from "../../services/auth/authService";
 
 
 
@@ -26,14 +28,17 @@ const PasswordRecoveryForm = (props) => {
         console.log("passwordRecoveryForm", passwordRecoveryFormInfo);
         if (passwordRecoveryFormInfo.confPassword !== null && passwordRecoveryFormInfo.password !== null)
             setValidPassword(passwordRecoveryFormInfo.confPassword === passwordRecoveryFormInfo.password && passwordRecoveryFormInfo.password.length===8);
-
-
     }, [passwordRecoveryFormInfo]);
 
-
     const passwordRecoveryFormHandler = (e) => {
-        e.preventDefault();
+        e.target.disabled = true;
+        /*acavaelnombre(passwordRecoveryFormInfo)
+            .then((data) => {
+                setPasswordRecoveryFormResult(true);
+            })
+            .catch(() => setPasswordRecoveryFormResult(false));*/
     }
+
 
     return (
         <>
@@ -50,7 +55,7 @@ const PasswordRecoveryForm = (props) => {
                     onChange={passwordRecoveryFormInfoChangeHandler}
                 />
                 <Form.Text className="text-muted">
-                    La contraseña debe contener 8 caracteres, puede combinar letras y números.
+                    La contraseña debe contener 8 caracteres, puede combinar letras y números, mayùsculas y minusculas.
                 </Form.Text>
             </Form.Group>
 

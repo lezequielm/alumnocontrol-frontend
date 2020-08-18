@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import {register} from "../../services/auth/authService";
+import InfoModal from "../../components/infoModal";
 
 
 const Registration = (props) => {
@@ -62,14 +63,11 @@ const Registration = (props) => {
             .then((data) => {
                 setRegistrationResult(true);
             })
-            .catch(() => setRegistrationResult(false));
+            .catch(() => {
+                setRegistrationResult(false);
+                e.target.disabled = false;
+            });
     }
-
-    useEffect(() => {
-        if (registrationResult)
-            history.push('/login');
-
-    },[registrationResult]);
 
     return (
         <>
@@ -178,6 +176,13 @@ const Registration = (props) => {
             >
                 Registrarme
             </Button>
+
+            <InfoModal
+                show={registrationResult}
+                onClose={() => history.push('/login')}
+                title={'Registro'}
+                message={'El usuario ha sido creado correctamente, revise su casilla de correo para activar su cuenta.'}
+            />
 
         </>
     )

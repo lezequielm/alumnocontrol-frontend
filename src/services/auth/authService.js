@@ -1,4 +1,4 @@
-import {AUTHENTICATE_ENDPOINT, REGISTER_ENDPOINT} from "../../conf/apiConfiguration";
+import {ACTIVATE_ENDPOINT, AUTHENTICATE_ENDPOINT, REGISTER_ENDPOINT} from "../../conf/apiConfiguration";
 
 export const login = async (loginInfo) => {
     let myHeaders = new Headers();
@@ -26,10 +26,16 @@ export const register = async (registrationInfo) => {
         body: raw,
     };
     let response = await fetch(REGISTER_ENDPOINT, requestOptions);
-    if (response.status === 200){
-        let data = await response.json();
-        console.log(data);
-        return data;
+    console.log(response);
+    if (response.status === 201) {
+        return;
+    }
+    throw new Error(response.statusText);
+}
+export const activate = async (activationKey) => {
+    let response = await fetch(`${ACTIVATE_ENDPOINT}?key=${activationKey}`);
+    if (response.status === 200) {
+        return;
     }
     throw new Error(response.statusText);
 }
