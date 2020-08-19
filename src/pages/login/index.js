@@ -35,14 +35,20 @@ const Login = (props) => {
 
     const loginHandler = (e) => {
         e.preventDefault();
+        e.persist();
+        e.target.disabled = true;
         login(loginInfo)
             .then((data) => {
                 sessionStorage.setItem('sessionToken', data.id_token);
                 setLoginResult(true);
+                e.stopPropagation();
             })
             .catch(() => {
                 sessionStorage.removeItem('sessionToken');
                 setLoginResult(false);
+                e.target.disabled = false;
+                e.stopPropagation();
+
             });
     }
 
