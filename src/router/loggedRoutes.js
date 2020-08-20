@@ -15,6 +15,11 @@ export default [
                 component: lazy(() => import('../pages/home/index'))
             },
             {
+                path: '/editProfile',
+                exact: true,
+                component: lazy(() => import('../pages/editProfile/index'))
+            },
+            {
                 component: () => <Redirect to="/home" />
             }
 
